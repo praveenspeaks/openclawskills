@@ -3,6 +3,8 @@
  * Manages saving all generated content to storage (Google Drive, Local, etc.)
  */
 
+import * as fs from 'fs';
+import * as path from 'path';
 import {
   StorageAdapter,
   StorageFactory,
@@ -108,19 +110,45 @@ export class StorageManager {
   /**
    * Connect to Google Drive with OAuth
    */
+  /**
+   * Load Google OAuth credentials from env vars.
+   * Supports:
+   *   GOOGLE_CLIENT_SECRET=/path/to/client_secret.json  (file path)
+   *   or GOOGLE_CLIENT_ID + GOOGLE_CLIENT_SECRET as raw values
+   */
+  private loadGoogleCredentials(): { clientId: string; clientSecret: string } {
+    const secretEnv = process.env.GOOGLE_CLIENT_SECRET || '';
+
+    // If it looks like a file path, read and parse the JSON
+    if (secretEnv.endsWith('.json') && fs.existsSync(secretEnv)) {
+      const raw = JSON.parse(fs.readFileSync(secretEnv, 'utf-8'));
+      // Google client secret JSON has credentials under "installed" or "web" key
+      const creds = raw.installed || raw.web;
+      if (creds) {
+        return { clientId: creds.client_id, clientSecret: creds.client_secret };
+      }
+    }
+
+    return {
+      clientId: process.env.GOOGLE_CLIENT_ID || 'YOUR_CLIENT_ID',
+      clientSecret: secretEnv || 'YOUR_CLIENT_SECRET',
+    };
+  }
+
   async connectGoogleDrive(authCode?: string): Promise<{
     success: boolean;
     authUrl?: string;
     needsAuth: boolean;
     message: string;
   }> {
+    const { clientId, clientSecret } = this.loadGoogleCredentials();
+
     // If no auth code, provide the auth URL
     if (!authCode) {
-      const clientId = process.env.GOOGLE_CLIENT_ID || 'YOUR_CLIENT_ID';
       const redirectUri = 'urn:ietf:wg:oauth:2.0:oob'; // Out-of-band for CLI
-      
+
       const authUrl = GoogleDriveAdapter.getAuthUrl(clientId, redirectUri, 'cinematic-writer');
-      
+
       return {
         success: false,
         authUrl,
@@ -131,8 +159,6 @@ export class StorageManager {
 
     // Exchange code for tokens
     try {
-      const clientId = process.env.GOOGLE_CLIENT_ID || 'YOUR_CLIENT_ID';
-      const clientSecret = process.env.GOOGLE_CLIENT_SECRET || 'YOUR_CLIENT_SECRET';
       const redirectUri = 'urn:ietf:wg:oauth:2.0:oob';
 
       const tokens = await GoogleDriveAdapter.exchangeCode(
