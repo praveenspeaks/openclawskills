@@ -1,5 +1,5 @@
 {
-  "name": "@aryajasdev/cinematic-script-writer",
+  "name": "cinematic-script-writer",
   "version": "1.4.1",
   "description": "OpenClaw Agent Skills - Cinematic Script Writer with consistency, cinematography, and storage",
   "main": "dist/index.js",

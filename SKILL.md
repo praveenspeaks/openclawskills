@@ -11,7 +11,7 @@ metadata:
     install:
       - id: npm-install
         kind: npm
-        package: openclaw-skills
+        package: "cinematic-script-writer"
         bins:
           - cinematic-script
 tags:
@@ -38,7 +38,7 @@ Create professional cinematic scripts for AI video generation with character con
 
 ```bash
 # Install via npm
-npm install -g openclaw-skills
+npm install -g cinematic-script-writer
 
 # Or install via OpenClaw CLI
 openclaw skills install cinematic-script-writer

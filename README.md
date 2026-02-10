@@ -23,7 +23,7 @@
 
 ```bash
 # Install globally
-npm install -g openclaw-skills
+npm install -g cinematic-script-writer
 
 # Create a story context
 cinematic-script create-context --name "My Story" --genre comedy --era "Modern"
