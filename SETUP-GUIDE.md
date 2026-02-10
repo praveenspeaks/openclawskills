@@ -14,7 +14,7 @@ This guide walks you through:
 1. **Go to GitHub**: https://github.com/new
 
 2. **Create New Repository**:
-   - Repository name: `openclaw-cinematic-writer`
+   - Repository name: `Cinematic-Writer`
    - Description: `OpenClaw skill for cinematic script generation with consistency and storage`
    - Make it **Public** (or Private if you prefer)
    - **DON'T** initialize with README (we already have one)
