@@ -1,6 +1,6 @@
 {
   "name": "cinematic-script-writer",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "OpenClaw Agent Skills - Cinematic Script Writer with consistency, cinematography, and storage",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -53,6 +53,7 @@
   },
   "files": [
     "dist/**/*",
+    "skills/cinematic-script-writer/skill.json",
     "SKILL.md",
     "README.md",
     "LICENSE"

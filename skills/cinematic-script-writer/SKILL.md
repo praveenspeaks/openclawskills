@@ -36,7 +36,7 @@ This skill helps you create complete cinematic scripts for animated/comic videos
 
 ### Storage Integration
 - Google Drive OAuth connection
-- Local storage (downloads)
+- Local storage with persistent custom path (`~/.cinematic-script/config.json`)
 - Organized folder structure
 - Complete project export
 
@@ -195,7 +195,7 @@ creative, video, script, cinematography, consistency, character-design, voice, s
 
 ## Version
 
-1.3.0
+1.4.3
 
 ## Author
 

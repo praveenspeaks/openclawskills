@@ -1,6 +1,6 @@
 {
   "name": "cinematic-script-writer",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Professional cinematic script generation with consistency, cinematography, and storage",
   "type": "module",
   "main": "index.ts",
