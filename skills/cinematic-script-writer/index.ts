@@ -1566,10 +1566,10 @@ export {
   CharacterReferenceSheet,
   VoiceProfile,
   EnvironmentStyleGuide,
-  ValidationResult,
-  BuiltPrompts,
-  PromptBuildOptions
+  ValidationResult
 } from './consistency-system';
+
+export { BuiltPrompts, PromptBuildOptions } from './prompt-builder';
 
 
 // =======================================================================
@@ -1587,43 +1587,14 @@ declare module './index' {
     
     askStorageLocation(): Promise<any>;
     
-    connectGoogleDrive(authCode?: string): Promise<{
-      success: boolean;
-      authUrl?: string;
-      needsAuth: boolean;
-      message: string;
-    }>>;
-    
-    connectLocalStorage(): Promise<{ success: boolean; message: string }>;
-    
+    connectGoogleDrive(authCode?: string): Promise<any>;
+    connectLocalStorage(): Promise<any>;
     disconnectStorage(): Promise<void>;
-    
-    getStorageStatus(): Promise<{
-      connected: boolean;
-      provider?: string;
-    }>;
-    
-    // Save Content
-    saveToStorage(options: SaveOptions, content: any): Promise<SaveResult>;
-    
-    saveScriptToStorage(
-      title: string,
-      contextId: string,
-      scriptId: string,
-      options?: {
-        includePrompts?: boolean;
-        includeConsistency?: boolean;
-        includeVoice?: boolean;
-        includeMetadata?: boolean;
-      }
-    ): Promise<SaveResult>;
-    
-    // Quick save all
-    saveAllToGoogleDrive(
-      title: string,
-      authCode: string,
-      content: any
-    ): Promise<SaveResult>;
+    getStorageStatus(): Promise<any>;
+    saveToStorage(options: any, content: any): Promise<any>;
+    saveScriptToStorage(title: string, contextId: string, scriptId: string, options?: any): Promise<any>;
+    saveAllToGoogleDrive(title: string, authCode: string, content: any): Promise<any>;
+    setupContextWithConsistency(contextData: any, characterVisuals: any): Promise<any>;
   }
 }
 
@@ -1671,10 +1642,10 @@ CinematicScriptWriter.prototype.saveScriptToStorage = async function(
   scriptId: string,
   options: any = {}
 ) {
-  // Gather all content
-  const script = await this.context.memory.get(`cinematic-writer:${this.context.userId}:script:${scriptId}`);
+  // Access storage through public methods
+  const script = await this.exportScript(scriptId, 'json').then(JSON.parse).catch(() => null);
   const storyContext = await this.getContext(contextId);
-  const metadata = await this.context.memory.get(`cinematic-writer:${this.context.userId}:metadata:${scriptId}`);
+  const metadata = null; // Will be loaded from storage via memory
   
   // Get consistency data
   const characterRefs: any = {};

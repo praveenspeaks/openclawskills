@@ -80,7 +80,7 @@ export class StorageManager {
   /**
    * Ask user where to store files
    */
-  async askStorageLocation(): Promise<StoragePreferences> {
+  async askStorageLocation(): Promise<any> {
     // In a real implementation, this would show UI to user
     // For OpenClaw skill, this returns the question structure
     return {
@@ -879,8 +879,5 @@ export class StorageManager {
     return lines.join('\n');
   }
 }
-
-// Export
-export { StorageManager, StoragePreferences, SaveOptions, SaveResult, SavedFile };
 
 export default StorageManager;

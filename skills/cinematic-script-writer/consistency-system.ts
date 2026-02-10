@@ -988,13 +988,4 @@ Voice Profile for ${profile.characterName}:
 
 // Export singleton instance
 export const consistencyManager = new ConsistencyManager();
-
-// Export types
-export {
-  CharacterReferenceSheet,
-  VoiceProfile,
-  EnvironmentStyleGuide,
-  ValidationResult
-};
-
 export default consistencyManager;
