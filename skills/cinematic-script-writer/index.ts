@@ -1588,7 +1588,8 @@ declare module './index' {
     askStorageLocation(): Promise<any>;
     
     connectGoogleDrive(authCode?: string): Promise<any>;
-    connectLocalStorage(): Promise<any>;
+    connectLocalStorage(basePath?: string): Promise<any>;
+    loadStorageConfig(): Promise<boolean>;
     disconnectStorage(): Promise<void>;
     getStorageStatus(): Promise<any>;
     saveToStorage(options: any, content: any): Promise<any>;
@@ -1619,8 +1620,12 @@ CinematicScriptWriter.prototype.connectGoogleDrive = function(authCode?: string)
   return this.storage.connectGoogleDrive(authCode);
 };
 
-CinematicScriptWriter.prototype.connectLocalStorage = function() {
-  return this.storage.connectLocal();
+CinematicScriptWriter.prototype.connectLocalStorage = function(basePath?: string) {
+  return this.storage.connectLocal(basePath);
+};
+
+CinematicScriptWriter.prototype.loadStorageConfig = function() {
+  return this.storage.loadConfig();
 };
 
 CinematicScriptWriter.prototype.disconnectStorage = function() {

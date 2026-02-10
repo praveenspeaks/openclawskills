@@ -184,8 +184,9 @@ const commands: Record<string, (skill: CinematicScriptWriter, args: string[]) =>
     printJson(await skill.connectGoogleDrive());
   },
 
-  'connect-local': async (skill) => {
-    printJson(await skill.connectLocalStorage());
+  'connect-local': async (skill, args) => {
+    const basePath = optionalArg(args, '--path', '');
+    printJson(await skill.connectLocalStorage(basePath || undefined));
   },
 
   'storage-status': async (skill) => {
@@ -270,6 +271,7 @@ Run "cinematic-script <command> --help" for command-specific options.
   }
 
   const skill = createSkill();
+  await skill.loadStorageConfig();
   await handler(skill, args.slice(1));
 }
 

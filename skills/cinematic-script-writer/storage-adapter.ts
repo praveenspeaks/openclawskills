@@ -3,6 +3,9 @@
  * Supports Google Drive, Local Filesystem, and other storage backends
  */
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 export interface StorageConfig {
   provider: 'google-drive' | 'local' | 'dropbox' | 'onedrive' | 'custom';
   credentials?: {
@@ -307,6 +310,7 @@ export class GoogleDriveAdapter implements StorageAdapter {
 export class LocalStorageAdapter implements StorageAdapter {
   private config: StorageConfig | null = null;
   private connected = false;
+  private basePath = '';
 
   async connect(config: StorageConfig): Promise<boolean> {
     if (config.provider !== 'local') {
@@ -314,6 +318,11 @@ export class LocalStorageAdapter implements StorageAdapter {
     }
 
     this.config = config;
+    this.basePath = config.basePath || './downloads';
+
+    // Ensure base path exists
+    fs.mkdirSync(this.basePath, { recursive: true });
+
     this.connected = true;
     return true;
   }
@@ -321,6 +330,7 @@ export class LocalStorageAdapter implements StorageAdapter {
   async disconnect(): Promise<void> {
     this.connected = false;
     this.config = null;
+    this.basePath = '';
   }
 
   isConnected(): boolean {
@@ -328,38 +338,62 @@ export class LocalStorageAdapter implements StorageAdapter {
   }
 
   async createFolder(name: string, parentPath?: string): Promise<StorageFolder> {
-    // In browser environment, this would use File System Access API
-    // For now, return a mock folder
+    const folderPath = parentPath
+      ? path.join(this.basePath, parentPath, name)
+      : path.join(this.basePath, name);
+
+    fs.mkdirSync(folderPath, { recursive: true });
+
     return {
-      id: `local-${Date.now()}`,
+      id: folderPath,
       name: name,
-      path: parentPath ? `${parentPath}/${name}` : `/${name}`,
+      path: folderPath,
       created: true
     };
   }
 
   async createFile(folderId: string, file: StorageFile): Promise<{ id: string; webViewLink?: string }> {
-    // In browser, trigger download
-    // Note: This would need DOM APIs available in browser environment
-    // For Node.js/OpenClaw runtime, this is a placeholder
-    console.log(`[LocalStorage] Would download: ${file.name}`);
+    const filePath = path.join(folderId, file.name);
+
+    fs.writeFileSync(filePath, file.content, 'utf-8');
 
     return {
-      id: `local-${Date.now()}`,
+      id: filePath,
       webViewLink: undefined
     };
   }
 
   async listFiles(folderId: string): Promise<StorageFile[]> {
-    return [];
+    if (!fs.existsSync(folderId)) return [];
+
+    const entries = fs.readdirSync(folderId);
+    return entries
+      .filter(name => fs.statSync(path.join(folderId, name)).isFile())
+      .map(name => ({
+        name,
+        content: '',
+        mimeType: 'application/octet-stream',
+        path: path.join(folderId, name)
+      }));
   }
 
   async deleteFile(fileId: string): Promise<boolean> {
-    return true;
+    if (fs.existsSync(fileId)) {
+      fs.unlinkSync(fileId);
+      return true;
+    }
+    return false;
   }
 
   async getFile(fileId: string): Promise<StorageFile | null> {
-    return null;
+    if (!fs.existsSync(fileId)) return null;
+
+    return {
+      name: path.basename(fileId),
+      content: fs.readFileSync(fileId, 'utf-8'),
+      mimeType: 'application/octet-stream',
+      path: fileId
+    };
   }
 }
 

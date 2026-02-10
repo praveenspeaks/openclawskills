@@ -49,6 +49,7 @@ export interface SavedFile {
 export interface StorageStatus {
   connected: boolean;
   provider?: string;
+  basePath?: string;
   userInfo?: {
     email?: string;
     name?: string;
@@ -65,6 +66,60 @@ export class StorageManager {
     askBeforeSave: true
   };
 
+  private static get configDir(): string {
+    const home = process.env.HOME || process.env.USERPROFILE || '';
+    return path.join(home, '.cinematic-script');
+  }
+
+  private static get configPath(): string {
+    return path.join(StorageManager.configDir, 'config.json');
+  }
+
+  /**
+   * Save current storage config to disk for persistence across sessions
+   */
+  private saveConfig(): void {
+    try {
+      fs.mkdirSync(StorageManager.configDir, { recursive: true });
+      const data: Record<string, any> = { provider: this.config?.provider };
+      if (this.config?.basePath) data.basePath = this.config.basePath;
+      if (this.config?.folderId) data.folderId = this.config.folderId;
+      fs.writeFileSync(StorageManager.configPath, JSON.stringify(data, null, 2), 'utf-8');
+    } catch {
+      // Silently ignore write errors (read-only fs, etc.)
+    }
+  }
+
+  /**
+   * Load persisted config and reconnect storage adapter automatically
+   */
+  async loadConfig(): Promise<boolean> {
+    try {
+      if (!fs.existsSync(StorageManager.configPath)) return false;
+      const raw = JSON.parse(fs.readFileSync(StorageManager.configPath, 'utf-8'));
+      if (raw.provider === 'local' && raw.basePath) {
+        await this.connectLocal(raw.basePath);
+        return true;
+      }
+    } catch {
+      // Silently ignore read/parse errors
+    }
+    return false;
+  }
+
+  /**
+   * Remove persisted config
+   */
+  private clearConfig(): void {
+    try {
+      if (fs.existsSync(StorageManager.configPath)) {
+        fs.unlinkSync(StorageManager.configPath);
+      }
+    } catch {
+      // Silently ignore
+    }
+  }
+
   /**
    * Check if storage is configured and connected
    */
@@ -75,7 +130,8 @@ export class StorageManager {
 
     return {
       connected: this.adapter.isConnected(),
-      provider: this.config.provider
+      provider: this.config.provider,
+      basePath: this.config.basePath
     };
   }
 
@@ -206,10 +262,14 @@ export class StorageManager {
   /**
    * Connect to local storage (downloads)
    */
-  async connectLocal(): Promise<{ success: boolean; message: string }> {
+  async connectLocal(basePath?: string): Promise<{ success: boolean; message: string }> {
+    const resolvedPath = basePath
+      ? path.resolve(basePath)
+      : path.resolve('./downloads');
+
     this.config = {
       provider: 'local',
-      basePath: './downloads'
+      basePath: resolvedPath
     };
 
     this.adapter = StorageFactory.createAdapter('local');
@@ -217,9 +277,10 @@ export class StorageManager {
 
     if (connected) {
       this.preferences.provider = 'local';
+      this.saveConfig();
       return {
         success: true,
-        message: '✅ Local storage configured. Files will be downloaded.'
+        message: `✅ Local storage configured. Files will be saved to ${resolvedPath}`
       };
     }
 
@@ -237,6 +298,7 @@ export class StorageManager {
       await this.adapter.disconnect();
       this.adapter = null;
       this.config = null;
+      this.clearConfig();
     }
   }
 
