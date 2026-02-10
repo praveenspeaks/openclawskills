@@ -46,76 +46,117 @@ openclaw skills install cinematic-script-writer
 
 ## CLI Usage
 
-### Create a new story context
+### Context Management
+
+Create and manage story contexts with characters, era, and settings:
+
 ```bash
-cinematic-script context create --name "My Story" --era "Ancient India" --period "Ramayana Era"
+# Create a new story context
+cinematic-script create-context --name "My Story" --era "Ancient India" --period "Ramayana Era"
+
+# List all saved contexts
+cinematic-script list-contexts
+
+# Get a specific context
+cinematic-script get-context --id <context-id>
+
+# Delete a context
+cinematic-script delete-context --id <context-id>
 ```
 
-### List saved contexts
+### Story Generation
+
+Generate story ideas and create cinematic scripts:
+
 ```bash
-cinematic-script context list
+# Generate story ideas for a context
+cinematic-script generate-ideas --context-id <context-id> --count 3
+
+# Create a full cinematic script from an idea
+cinematic-script create-script --context-id <context-id> --idea-id <idea-id>
+
+# Generate YouTube metadata for a script
+cinematic-script generate-metadata --script-id <script-id>
 ```
 
-### Generate story ideas
-```bash
-cinematic-script ideas --context "My Story" --count 3
-```
+### Cinematography Reference
 
-### Create a full cinematic script
-```bash
-cinematic-script create --context "My Story" --idea 1 --output ./my-script.json
-```
+Access camera angles, lighting, and shot type databases:
 
-### Generate YouTube metadata
-```bash
-cinematic-script youtube --script ./my-script.json
-```
-
-### Save to Google Drive
-```bash
-cinematic-script save --script ./my-script.json --storage google-drive
-```
-
-### Export script
-```bash
-# Export as Markdown
-cinematic-script export --script ./my-script.json --format markdown --output ./script.md
-
-# Export as JSON
-cinematic-script export --script ./my-script.json --format json --output ./script.json
-
-# Export as plain text
-cinematic-script export --script ./my-script.json --format text --output ./script.txt
-```
-
-### Character consistency tools
-```bash
-# Create character reference
-cinematic-script character create --name "Kutil" --description "Purple rakshasa with golden eyes"
-
-# Get character reference
-cinematic-script character get --name "Kutil"
-
-# Generate consistency prompt
-cinematic-script character prompt --name "Kutil"
-```
-
-### Cinematography reference
 ```bash
 # List all camera angles
-cinematic-script cameras list
+cinematic-script list-angles
 
-# Get specific camera angle
-cinematic-script cameras get --angle "low-angle"
+# List all camera movements
+cinematic-script list-movements
 
 # List all shot types
-cinematic-script shots list
+cinematic-script list-shots
 
-# List all lighting techniques
-cinematic-script lighting list
+# Get camera setup recommendation
+cinematic-script suggest-camera --scene-type "dialogue" --mood "dramatic"
 
-# Suggest setup for scene
-cinematic-script suggest --scene "dialogue" --mood "dramatic"
+# Get lighting suggestions
+cinematic-script suggest-lighting --scene-type "interior" --mood "mysterious"
+
+# Get color grading suggestions
+cinematic-script suggest-grading --genre "action"
+
+# Search cinematography database
+cinematic-script search --query "low angle lighting"
+```
+
+### Character Consistency
+
+Create character references and validate prompts:
+
+```bash
+# Create a character reference sheet
+cinematic-script create-character-ref --character-id "char1" --name "Kutil" --visual "Purple rakshasa with golden eyes" --era "Ancient" --style "Pixar 3D"
+
+# Create a voice profile for dialogue consistency
+cinematic-script create-voice --character-id "char1" --name "Kutil" --personality "Mischievous, witty" --age "adult" --role "protagonist"
+
+# Validate a prompt for anachronisms
+cinematic-script validate-prompt --prompt "Your prompt here" --character-ids "char1,char2" --context-id <context-id>
+```
+
+### Storage
+
+Save projects to Google Drive or local storage:
+
+```bash
+# Connect to Google Drive
+cinematic-script connect-drive
+
+# Connect to local storage
+cinematic-script connect-local
+
+# Check storage connection status
+cinematic-script storage-status
+
+# Save project to storage
+cinematic-script save --title "My Story" --context-id <context-id> --script-id <script-id>
+```
+
+Storage implementation details:
+- **Google Drive**: Uses Google OAuth2 for authentication. Credentials are stored securely in memory.
+- **Local Storage**: Saves to the user's downloads folder as fallback.
+- **Library**: Uses `googleapis` for Google Drive integration.
+
+### Export
+
+Export scripts in various formats:
+
+```bash
+# Export as Markdown (default)
+cinematic-script export --script-id <script-id> --format markdown
+
+# Export as JSON
+cinematic-script export --script-id <script-id> --format json
+
+# Export as plain text
+cinematic-script export --script-id <script-id> --format text
 ```
 
 ## Features
