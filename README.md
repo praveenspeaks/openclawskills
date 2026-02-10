@@ -1,10 +1,29 @@
-# 🎬 OpenClaw Skills - Cinematic Script Writer
+# 🎬 Cinematic Script Writer Skill
 
 [![CI](https://github.com/yourusername/openclawskills/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/openclawskills/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 
 > Professional cinematic script generation for AI video creation with character consistency, comprehensive cinematography knowledge, and Google Drive integration.
+
+## 🚀 Two Ways to Use This Skill
+
+### Option 1: Import from GitHub (Recommended)
+
+ClawHub can import directly from this GitHub repository:
+
+1. Make sure this repo is **public**
+2. Go to https://clawhub.ai/import
+3. Enter: `https://github.com/YOUR_USERNAME/openclawskills`
+4. Click **"Detect"** - it will find `SKILL.md` automatically
+5. Fill in the details and publish
+
+### Option 2: Upload Folder
+
+1. Download the `clawhub-upload/` folder
+2. Go to https://clawhub.ai/upload
+3. Upload the folder
+4. Fill in details and publish
 
 ## ✨ Features
 
@@ -18,190 +37,41 @@
 | 💾 **Google Drive Integration** | Auto-save all content to organized folders |
 | 📺 **YouTube Metadata** | Titles, descriptions, tags for upload |
 
-## 🚀 Quick Start
-
-### Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/openclawskills.git
-cd openclawskills
-
-# Install dependencies
-npm install
-
-# Build
-npm run build
-```
-
-### Basic Usage
-
-```typescript
-import { CinematicScriptWriter } from './skills/cinematic-script-writer';
-
-const skill = new CinematicScriptWriter(config, context);
-
-// 1. Create story context
-const kutilContext = await skill.createContext(
-  "Kutil's Adventure",
-  "A cursed rakshasa's journey",
-  [{
-    name: "Kutil",
-    description: "Cute purple rakshasa",
-    personality: "Mischievous but kind",
-    appearance: "Purple fur, small horns, golden eyes",
-    role: "protagonist"
-  }],
-  "Ramayana Era",
-  "Ancient India",
-  "Lanka",
-  "short",
-  "comedy",
-  "All ages",
-  "Pixar 3D style"
-);
-
-// 2. Generate story ideas
-const ideas = await skill.generateStoryIdeas(kutilContext.id, 3);
-
-// 3. Create script
-const script = await skill.createCinematicScript(
-  kutilContext.id,
-  ideas[0].id,
-  ideas[0]
-);
-
-// 4. Connect Google Drive & Save
-await skill.connectGoogleDrive(authCode);
-await skill.saveScriptToStorage(ideas[0].title, kutilContext.id, script.id);
-```
-
 ## 📁 Repository Structure
 
 ```
 openclawskills/
-├── 📁 skill-template/              # Template for creating new skills
-│   ├── index.ts
-│   ├── skill.json
-│   └── README.md
-│
-├── 📁 examples/                    # Example skills
-│   ├── weather-skill/
-│   ├── todo-skill/
-│   └── file-manager-skill/
-│
+├──
+├── SKILL.md                    ← ClawHub detects this automatically
+├──
 ├── 📁 skills/
-│   └── 📁 cinematic-script-writer/ # Main skill
-│       ├── index.ts                # Main implementation (60KB)
-│       ├── cinematography-db.ts    # 175+ techniques
-│       ├── cinematography-api.ts   # Unified API
-│       ├── lighting-db.ts          # Lighting & composition
-│       ├── visual-styles-db.ts     # Visual aesthetics
-│       ├── consistency-system.ts   # Character/voice/env consistency
-│       ├── prompt-builder.ts       # Consistent prompts
-│       ├── storage-adapter.ts      # Google Drive/local storage
-│       ├── storage-manager.ts      # File organization
-│       ├── EXAMPLE-KUTIL.md        # Complete Kutil example
-│       ├── EXAMPLE-CONSISTENCY.md  # Consistency examples
-│       └── EXAMPLE-STORAGE.md      # Storage examples
+│   └── 📁 cinematic-script-writer/  # Main skill
+│       ├── SKILL.md                 # Skill documentation
+│       ├── index.ts                 # Main implementation
+│       ├── skill.json               # Tool definitions
+│       ├── cinematography-*.ts      # Camera techniques
+│       ├── consistency-*.ts         # Consistency system
+│       ├── storage-*.ts             # Storage system
+│       └── EXAMPLE-*.md             # Usage examples
 │
-├── 📄 package.json
-├── 📄 tsconfig.json
-├── 📄 LICENSE
-└── 📄 README.md
+├── 📁 clawhub-upload/          ← Ready-to-upload folder
+│   └── (all skill files for manual upload)
+│
+├── 📄 README.md                # This file
+├── 📄 SETUP-GUIDE.md           # Complete setup guide
+└── 📄 CLAWHUB-UPLOAD-GUIDE.md  # Upload instructions
 ```
 
-## 🎥 Cinematography Database
+## 📊 Skill Statistics
 
-| Category | Count | Examples |
-|----------|-------|----------|
-| **Camera Angles** | 20+ | eye-level, low-angle, dutch-angle, bird-eye, POV |
-| **Camera Movements** | 20+ | dolly, crane, gimbal, rack-focus, snorricam |
-| **Shot Types** | 25+ | extreme-wide, close-up, insert, silhouette |
-| **Lighting** | 30+ | three-point, chiaroscuro, god-rays, neon |
-| **Composition** | 20+ | rule-of-thirds, golden-ratio, leading-lines |
-| **Color Grading** | 20+ | teal-orange, noir, vintage, dayglow |
-| **Visual Styles** | 25+ | Pixar-3D, anime, film-noir, indian-miniature |
-| **Genre Guides** | 15+ | horror, comedy, action, romance, sci-fi |
-
-## 💾 Google Drive Integration
-
-Save your entire project organized in folders:
-
-```
-📁 Story Title/
-├── 00_INDEX.md                    # Navigation
-├── 01_SCRIPT_README.md            # Human-readable script
-├── 02_IMAGE_PROMPTS.md            # AI generation prompts
-├── 03_CHARACTER_REFERENCES.md     # Design guides
-├── 04_VOICE_GUIDELINES.md         # Dialogue guides
-├── 05_YOUTUBE_METADATA.md         # Upload info
-└── 99_CONTEXT_INFO.md             # Background
-```
-
-```typescript
-// Connect to Google Drive
-const auth = await skill.connectGoogleDrive();
-// Visit auth.authUrl, authorize, paste code
-await skill.connectGoogleDrive(userAuthCode);
-
-// Save everything
-const result = await skill.saveScriptToStorage(
-  "Story Title",
-  contextId,
-  scriptId
-);
-console.log(result.shareLink); // Google Drive link
-```
-
-## 🎯 Consistency System
-
-### Character Consistency
-```typescript
-// Create detailed character reference
-const ref = skill.createCharacterReference(
-  "kutil-id",
-  "Kutil",
-  "Purple fur, small horns, golden eyes...",
-  "Ramayana Era",
-  "pixar-3d"
-);
-
-// Build consistent prompts
-const prompt = skill.generateCharacterConsistencyPrompt("kutil-id");
-// Ensures same appearance in every shot
-```
-
-### Voice Consistency
-```typescript
-const voice = skill.createVoiceProfile(
-  "kutil-id",
-  "Kutil",
-  "mischievous, determined",
-  "young-adult",
-  "protagonist"
-);
-
-const guidelines = skill.generateVoiceGuidelines("kutil-id");
-// Get pitch, speed, catchphrases for consistent dialogue
-```
-
-### Environment Validation
-```typescript
-// Validates no anachronisms
-const result = skill.validatePrompt(
-  "Kutil wearing sunglasses", // ❌
-  ["kutil-id"],
-  contextId
-);
-// Error: "glasses does not belong in Ramayana Era"
-```
-
-## 📚 Documentation
-
-- **[EXAMPLE-KUTIL.md](skills/cinematic-script-writer/EXAMPLE-KUTIL.md)** - Complete Kutil story workflow
-- **[EXAMPLE-CONSISTENCY.md](skills/cinematic-script-writer/EXAMPLE-CONSISTENCY.md)** - Consistency system guide
-- **[EXAMPLE-STORAGE.md](skills/cinematic-script-writer/EXAMPLE-STORAGE.md)** - Google Drive storage guide
+| Metric | Value |
+|--------|-------|
+| **Total Files** | 38 |
+| **Code Size** | ~320KB |
+| **TypeScript Files** | 13 |
+| **Documentation** | 7 guides |
+| **Tools** | 55 methods |
+| **Cinematography Techniques** | 175+ |
 
 ## 🛠️ Development
 
@@ -209,111 +79,59 @@ const result = skill.validatePrompt(
 # Install dependencies
 npm install
 
-# Run tests
-npm test
-
 # Build
 npm run build
 
+# Test
+npm test
+
 # Lint
 npm run lint
-
-# Fix lint issues
-npm run lint:fix
-```
-
-## 🧪 Testing
-
-### Unit Tests
-```bash
-npm test
-```
-
-### Manual Testing
-```typescript
-// Test cinematography
-const angle = skill.getCameraAngle('low-angle');
-console.log(angle.emotionalImpact); // "Power, dominance, heroism"
-
-// Test consistency
-const validation = skill.validatePrompt(
-  "Kutil with smartphone",
-  [charId],
-  contextId
-);
-console.log(validation.errors); // ["Anachronism detected..."]
 ```
 
 ## 📦 Publishing to ClawHub
 
-### 1. Prepare Package
+### Method 1: GitHub Import (Easiest)
 
-```bash
-# Ensure version is updated in skill.json
-# Update CHANGELOG.md
-# Commit all changes
-git add .
-git commit -m "v1.3.0 - Add Google Drive storage"
-git push origin main
-```
+1. **Push to GitHub** (make repo public):
+   ```bash
+   git remote add origin https://github.com/YOUR_USERNAME/openclawskills.git
+   git push -u origin main
+   ```
 
-### 2. Create GitHub Release
+2. **Import to ClawHub**:
+   - Go to https://clawhub.ai/import
+   - Enter: `https://github.com/YOUR_USERNAME/openclawskills`
+   - Click **Detect**
+   - Fill in:
+     - Slug: `cinematic-script-writer`
+     - Display name: `Cinematic Script Writer`
+     - Version: `1.3.0`
+     - Tags: `creative, video, script, cinematography, consistency`
+   - Click **Publish**
 
-1. Go to GitHub → Releases → Draft New Release
-2. Tag: `v1.3.0`
-3. Title: `v1.3.0 - Google Drive Storage & Consistency`
-4. Description: Copy from CHANGELOG.md
-5. Publish Release
+### Method 2: Manual Upload
 
-### 3. Submit to ClawHub
+See [CLAWHUB-UPLOAD-GUIDE.md](CLAWHUB-UPLOAD-GUIDE.md)
 
-Visit [https://clawhub.ai/publish](https://clawhub.ai/publish) and provide:
+## 📚 Documentation
 
-```yaml
-# Required Information
-name: cinematic-script-writer
-version: 1.3.0
-description: Professional cinematic script generation with consistency
-repository: https://github.com/yourusername/openclawskills
-license: MIT
-entry: skills/cinematic-script-writer/index.ts
+- [SETUP-GUIDE.md](SETUP-GUIDE.md) - Complete setup and testing guide
+- [CLAWHUB-UPLOAD-GUIDE.md](CLAWHUB-UPLOAD-GUIDE.md) - ClawHub upload instructions
+- [skills/cinematic-script-writer/EXAMPLE-KUTIL.md](skills/cinematic-script-writer/EXAMPLE-KUTIL.md) - Complete Kutil example
+- [skills/cinematic-script-writer/EXAMPLE-CONSISTENCY.md](skills/cinematic-script-writer/EXAMPLE-CONSISTENCY.md) - Consistency guide
+- [skills/cinematic-script-writer/EXAMPLE-STORAGE.md](skills/cinematic-script-writer/EXAMPLE-STORAGE.md) - Storage guide
 
-# Tags
-tags:
-  - creative
-  - video
-  - script
-  - cinematography
-  - consistency
-  - google-drive
+## 🔧 Requirements
 
-# Permissions
-permissions:
-  - memory:read
-  - memory:write
-  - http:request
-```
-
-Or use ClawHub CLI (if available):
-```bash
-npx clawhub publish
-# Follow prompts
-```
-
-## 🤝 Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+- Node.js 18+
+- TypeScript 5.0+
+- OpenClaw Agent with memory permissions
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file.
-
-## 🙏 Acknowledgments
-
-- OpenClaw community
-- Contributors to cinematography techniques
-- Indian art and mythology resources
+MIT License - see [LICENSE](LICENSE)
 
 ---
 
-**Made with ❤️ for AI storytelling**
+**Made for OpenClaw** 🦞
