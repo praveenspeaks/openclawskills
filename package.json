@@ -1,6 +1,6 @@
 {
   "name": "openclaw-skills",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "OpenClaw Agent Skills - Cinematic Script Writer with consistency, cinematography, and storage",
   "type": "module",
   "main": "dist/index.js",
