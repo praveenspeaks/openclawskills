@@ -199,7 +199,7 @@ creative, video, script, cinematography, consistency, character-design, voice, s
 
 ## Author
 
-Your Name
+Praveen Kumar
 
 ## License
 

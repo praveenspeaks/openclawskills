@@ -13,7 +13,7 @@
     "consistency",
     "google-drive"
   ],
-  "author": "Your Name",
+  "author": "Praveen Kumar",
   "license": "MIT",
   "dependencies": {
     "uuid": "^9.0.0"
