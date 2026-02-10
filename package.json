@@ -2,7 +2,6 @@
   "name": "openclaw-skills",
   "version": "1.4.0",
   "description": "OpenClaw Agent Skills - Cinematic Script Writer with consistency, cinematography, and storage",
-  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -31,12 +30,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yourusername/openclawskills.git"
+    "url": "git+https://github.com/praveenspeaks/cinematic-script-writer.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/openclawskills/issues"
+    "url": "https://github.com/praveenspeaks/cinematic-script-writer/issues"
   },
-  "homepage": "https://github.com/yourusername/openclawskills#readme",
+  "homepage": "https://github.com/praveenspeaks/cinematic-script-writer#readme",
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "@types/node": "^20.0.0",
@@ -51,6 +50,12 @@
   "dependencies": {
     "uuid": "^9.0.0"
   },
+  "files": [
+    "dist/**/*",
+    "SKILL.md",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=18.0.0"
   }

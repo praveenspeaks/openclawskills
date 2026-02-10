@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "lib": ["ES2022"],
     "outDir": "./dist",
     "rootDir": ".",
@@ -15,7 +16,8 @@
     "sourceMap": true
   },
   "include": [
-    "**/index.ts"
+    "**/index.ts",
+    "bin/**/*.ts"
   ],
   "exclude": [
     "node_modules",
